@@ -1,3 +1,4 @@
+package date;
 public interface DateInterface {
  public static final int DATETYPE_YEAR = 0;
  public static final int DATETYPE_DAY = 2;
@@ -21,6 +22,7 @@ public interface DateInterface {
  public void removeYears(int yearsToRemove);
  
  public int daysBetween(DateInterface date1, DateInterface date2);
+ public int monthBetween(DateInterface date1, DateInterface date2); // added function
  public int timeBetween(int type, DateInterface date1);
  public void synchWithUTCTimeserver();
  
@@ -29,10 +31,8 @@ public interface DateInterface {
  public int toNumberOfDays();
  public int toNumberOfMonths();
  public DateInterface toDateInterface(int numberOfDays);
- public int monthBetween(DateInterface date1, DateInterface date2);
- 
- 
  
  @Override
  public String toString();
+ 
 }
