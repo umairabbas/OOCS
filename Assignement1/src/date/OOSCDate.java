@@ -5,11 +5,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 
 public class OOSCDate implements DateInterface, Cloneable{
@@ -52,7 +47,16 @@ public class OOSCDate implements DateInterface, Cloneable{
 		assert(this.day == day): "Someting went wrong is the day's instantation";
 		assert(invariant()) : "Date not valide";
 	}
-	
+	public OOSCDate() {
+		this.year = 0;
+		this.month = Month.JANUARY;
+		this.day = 1;
+		
+		assert(this.year == 0): "Someting went wrong is the year's instantation";
+		assert(this.month == Month.JANUARY): "Someting went wrong is the month's instantation";
+		assert(this.day == 1): "Someting went wrong is the day's instantation";
+		assert(invariant()) : "Date not valide";
+	}
 	
 	/* ############################################# */
 	/* ############################################# */
@@ -72,7 +76,7 @@ public class OOSCDate implements DateInterface, Cloneable{
 		assert(invariant()) : "The invariante is not respected";
 	}
 
-	public void setDate(int year, Month month, int day) {
+	public void setDate(int year, Month month, int day){
 		assert(invariant()) : "The invariante is not respected";
 		assert(checkDate(year, month, day)): "Date not valide";
 		
@@ -378,7 +382,7 @@ public class OOSCDate implements DateInterface, Cloneable{
 					// TODO: Throw errors
 				}
 				else{
-					String[] oosc = format[0].split("T");
+//					String[] oosc = format[0].split("T");
 					// TODO: Deal with erros
 				}
 				
@@ -426,9 +430,10 @@ public class OOSCDate implements DateInterface, Cloneable{
 		return year * 12 + year;
 	}
 	
-	@Override
-	public DateInterface toDateInterface(int numberOfDays){
-		assert(invariant()) : "The invariante is not respected";
+	
+	public static DateInterface toDateInterface(int numberOfDays){
+		//assert(invariant()) : "The invariante is not respected";
+		assert(0 < numberOfDays): "The number of day has to be positif (not null)";
 		
 		DateInterface date;
 		int year = 0;
@@ -446,7 +451,7 @@ public class OOSCDate implements DateInterface, Cloneable{
 		date = new OOSCDate(year, month, numberOfDays);
 		
 		assert(date.toNumberOfDays() == numberOfDays): "toNumberOfDays() and toDateInterface(...) sould be inverse function";
-		assert(invariant()) : "The invariante is not respected";
+		//assert(invariant()) : "The invariante is not respected";
 		return date;
 	}
 	

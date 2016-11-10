@@ -30,7 +30,6 @@ public interface DateInterface {
  // added functions
  public int toNumberOfDays();
  public int toNumberOfMonths();
- public DateInterface toDateInterface(int numberOfDays);
  
  @Override
  public String toString();
