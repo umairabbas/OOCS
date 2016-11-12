@@ -38,7 +38,7 @@ import java.util.Map;
 	        return value;
 	    }
 	    public int getNumberOfDays(int year){
-	    	if(this == FEBRUARY && OOSCDate.isLeapYear(year)){
+	    	if(this == FEBRUARY && DateInterface.isLeapYear(year)){
 	    		return 29;
 	    	}
 	    	else{
