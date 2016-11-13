@@ -23,10 +23,10 @@ public class OOSCDate implements DateInterface, Cloneable{
 	/* Constructor */
 	
 	/**
-	 * 
-	 * @param year
-	 * @param month
-	 * @param day
+	 * Construct a new date
+	 * @param year The year (positive or null)
+  	 * @param month The month
+  	 * @param day The day, how has to correspond to the month and the year  (0 < day < 32)
 	 * @throws AssertionError
 	 */
 	public OOSCDate(int year, Month month, int day) throws AssertionError{
@@ -41,6 +41,13 @@ public class OOSCDate implements DateInterface, Cloneable{
 		assert(this.day == day): "Someting went wrong is the day's instantation";
 		assert(invariant()) : "Date not valide";
 	}
+	/**
+	 * Construct a new date
+	 * @param year The year (positive or null)
+  	 * @param month The month (1 for January and 12 for December)
+  	 * @param day The day, how has to correspond to the month and the year  (0 < day < 32)
+	 * @throws AssertionError
+	 */
 	public OOSCDate(int year, int month, int day){
 		assert(DateInterface.checkDate(year, month, day)): "Date not valide";
 		
@@ -54,6 +61,9 @@ public class OOSCDate implements DateInterface, Cloneable{
 		assert(this.day == day): "Someting went wrong is the day's instantation";
 		assert(invariant()) : "Date not valide";
 	}
+	/**
+	 * Construct the 1th January 0000 date. 
+	 */
 	public OOSCDate() {
 		this.year = 0;
 		this.month = Month.JANUARY;
@@ -381,6 +391,14 @@ public class OOSCDate implements DateInterface, Cloneable{
 	/* Other function */
 	
 
+	public static void main(String[] args){
+		OOSCDate t = new OOSCDate();
+		t.synchWithUTCTimeserver();
+		
+	    System.out.println(t.toString());
+	}
+	
+	
 	@Override
 	public void synchWithUTCTimeserver() {
 		try {

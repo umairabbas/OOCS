@@ -29,8 +29,8 @@ public class OOSCDateTest {
 	@Test
 	public void numberOfDaysInYear(){
 		for(int y=0; y<LIMITE_YEAR_TESTED; ++y){
-			int n = OOSCDate.numberOfDaysInYear(y);
-			if(OOSCDate.isLeapYear(y)){
+			int n = DateInterface.numberOfDaysInYear(y);
+			if(DateInterface.isLeapYear(y)){
 				assertEquals(n, 366);
 			}
 			else{

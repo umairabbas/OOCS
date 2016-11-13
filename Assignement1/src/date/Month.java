@@ -33,10 +33,18 @@ import java.util.Map;
 	        assert(this.value == value);
 	        assert(this.dayNumber == dayNumber);
 	    }
-	    
+	    /**
+	     * Return the number corresponding to the month
+	     * @return The number corresponding to the month. (1 for January and 12 for December)
+	     */
 	    public int getValue() {
 	        return value;
 	    }
+	    /**
+	     * Return the number of days corresponding to the month at this year
+	     * @param year The year in witch the month is
+	     * @return the number of days corresponding to the month at this year
+	     */
 	    public int getNumberOfDays(int year){
 	    	if(this == FEBRUARY && DateInterface.isLeapYear(year)){
 	    		return 29;
@@ -45,16 +53,29 @@ import java.util.Map;
 	    		return dayNumber;
 	    	}
 	    }
+	    /**
+	     * Create the Month corresponding to the value.
+	     * @param month The value of the month (1 for January and 12 for December)
+	     * @return The corresponding Month
+	     */
 	    public static Month month(int month){
 	    	assert(0 < month && month < 13): "Invalide month value";
 	    	return map.get(month);
 	    }
+	    /**
+	     * Return the following month. Example: 
+	     * January -> February and December -> January
+	     * @return the following month
+	     */
 	    public Month nextMonth(){
 	    	int newValue = (value + 1) % 12;
 	    	if(newValue == 0) newValue = 12;
 	    	return Month.month(newValue);
 	    }
 	    @Override
+	    /**
+	     * To the English name
+	     */
 	    public String toString(){
 	    	return english;
 	    }
