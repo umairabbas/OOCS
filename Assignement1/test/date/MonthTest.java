@@ -31,7 +31,7 @@ public class MonthTest {
 		for(int y= 0; y<3000; ++y){
 			assertEquals(Month.JANUARY.getNumberOfDays(y), 31);
 			
-			if(OOSCDate.isLeapYear(y)){
+			if(DateInterface.isLeapYear(y)){
 				assertEquals(Month.FEBRUARY.getNumberOfDays(y), 29);
 			}
 			else {
