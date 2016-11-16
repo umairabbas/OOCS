@@ -35,6 +35,21 @@ public class OOSCDateTest {
 			}
 		}
 	}
+	
+	@Test
+	public void isLeapYear(){
+		
+		Boolean leapYear;
+		
+		for (int y = 0; y < LIMITE_YEAR_TESTED; ++y) {
+			if((y %4 == 0) && (y % 100 == 0) && (y % 400 == 0)){
+				leapYear = true;
+			}else{
+				leapYear = false;
+			}
+				assertEquals(leapYear,DateInterface.isLeapYear(y));
+		}
+	}
 
 	// @Test
 	// public void toDateInterface(){
@@ -47,6 +62,7 @@ public class OOSCDateTest {
 	//
 	// }
 	//
+
 	@Test
 	public void addDaysTest() {
 		Random r = new Random();
@@ -80,20 +96,32 @@ public class OOSCDateTest {
 	@Test
 	public void setDate() {
 
-		OOSCDate date1 = new OOSCDate(2016, 11, 10);
-		OOSCDate date2 = new OOSCDate(2016, 11, 10);
-
-		date1.setDate(2016, 11, 12);
-		date2.setDate(2016, 11, 12);
-
-		// assertEquals(date1,date2);
-		assertTrue(date1.equals(date2));
+		OOSCDate date = new OOSCDate();
+		OOSCDate dateTocompare;
+		
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					
+					dateTocompare = new OOSCDate(y,m,d);
+					date.setDate(y,m,d);
+					
+					assertEquals(dateTocompare,date);
+				}
+			}
+		}
 	}
+		
 
 	@Test
 	public void setYear() {
-		for(int y1 = 0; y1<LIMITE_YEAR_TESTED; ++y1){
-			for(int y2 = 0; y2<LIMITE_YEAR_TESTED; ++y2){
+		//for(int y1 = 0; y1<LIMITE_YEAR_TESTED; ++y1){
+			
+		Random r = new Random();
+		int y1 = r.nextInt(5000);
+		
+		for(int y2 = 0; y2<LIMITE_YEAR_TESTED; ++y2){
 				for (Month m : Month.values()){
 					for(int d=1; d<=m.getNumberOfDays(y1); ++d){
 						OOSCDate date = new OOSCDate(y1, m, d);
@@ -110,55 +138,108 @@ public class OOSCDateTest {
 					}
 				}
 			}
-		}
+		//}
 	}
 
 	@Test
 	public void setMonth() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		date.setMonth(12);
-
-		assertEquals(12, date.getMonth());
-
+		int n;
+		
+		for(int y = 1; y<LIMITE_YEAR_TESTED; ++y){
+			for (Month m1 : Month.values()){
+				for(Month m2 : Month.values()){
+				
+					if(m1.getNumberOfDays(y) < m2.getNumberOfDays(y)){
+						n = m1.getNumberOfDays(y);
+					}else{
+						n = m2.getNumberOfDays(y);
+					}
+					
+					for(int d=1; d < n ;++d){
+						
+						OOSCDate date = new OOSCDate(y,m1,d);
+						date.setMonth(m2.getValue());
+						
+						OOSCDate dateToCompare = new OOSCDate(y,m2,d); 
+						
+						assertTrue(date.equals(dateToCompare));
+					}
+				}
+			}
+		}
 	}
 
 	@Test
 	public void setDay() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		date.setDay(29);
-
-		assertEquals(29, date.getDay());
+		OOSCDate date,dateToCompare;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d1=1; d1<=m.getNumberOfDays(y); ++d1){
+					for(int d2=1; d2<=m.getNumberOfDays(y); ++d2){
+							
+						date = new OOSCDate(y,m,d1);
+						date.setDay(d2);
+						
+						dateToCompare = new OOSCDate(y,m,d2); 
+						
+						assertTrue(date.equals(dateToCompare));
+					}
+				}
+			}
+		}
 	}
+
 
 	@Test
 	public void getYear() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		assertEquals(2016, date.getYear());
-
+		OOSCDate date;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					date = new OOSCDate(y,m,d);
+					
+					assertEquals(y,date.getYear());
+				}
+			}
+		}
 	}
 
 	@Test
 	public void getMonth() {
-
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		assertEquals(11, date.getMonth());
-
+		
+		OOSCDate date;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					date = new OOSCDate(y,m,d);
+					
+					assertEquals(m.getValue(),date.getMonth());
+				}
+			}
+		}	
 	}
 
 	@Test
 	public void getDay() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		assertEquals(10, date.getDay());
-
+		OOSCDate date;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+		
+					date = new OOSCDate(y,m,d);
+		
+					assertEquals(d,date.getDay());
+				}
+			}
+		}	
 	}
 
 	@Test
@@ -175,80 +256,268 @@ public class OOSCDateTest {
 	@Test
 	public void addMonths() {
 
-		OOSCDate date = new OOSCDate(2016, 2, 10);
-
-		date.addMonths(1);
-
-		assertEquals(3, date.getMonth());
+		Random r = new Random();
+		int monthsToadd = r.nextInt(5000);
+		int addedyears;
+		int addedmonths;
+		
+		OOSCDate date,dateTocompare;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+		
+					date = new OOSCDate(y,m,d);
+					dateTocompare = new OOSCDate(y,m,d);
+					
+					monthsToadd = r.nextInt(5000)+ date.getMonth();
+					addedyears = monthsToadd / 12;
+					addedmonths = monthsToadd % 12;
+					
+					date.setYear(y + addedyears);
+					date.setMonth(m.getValue() + addedmonths);
+					
+					dateTocompare.addMonths(monthsToadd); 
+					
+					assertTrue(date.equals(dateTocompare));
+					
+				}
+			}
+		}	
 
 	}
 
 	@Test
 	public void addYears() {
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-		date.addYears(2);
-		assertEquals(2018, date.getYear());
+		
+		Random r = new Random();
+		int yearsToadd = r.nextInt(5000);
+		
+		OOSCDate date;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+		
+					yearsToadd = r.nextInt(5000);
+					
+					date = new OOSCDate(y,m,d);
+					date.addYears(yearsToadd);
+					
+					assertEquals(yearsToadd + y,date.getDay());
+				}
+			}
+		}	
 	}
 
 	@Test
 	public void removeDays() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
+		Random r = new Random();
+		int daysToremove;
+		int removedYears = 0 ,removedMonths = 0,removedDays;
+		int max;
+		
+		OOSCDate date,dateTocompare;
+		
+		for(int y = 1; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					
+					date = new OOSCDate(y,m,d);
+					dateTocompare = new OOSCDate(y,m,d);
+					
+					max = date.toNumberOfDays();
+					daysToremove = r.nextInt(max)+1;
+					removedDays = daysToremove;
+					
+					while(removedDays >= DateInterface.numberOfDaysInYear(y)){
+						removedDays -= DateInterface.numberOfDaysInYear(y);
+						removedYears++;
+					}
 
-		date.removeDays(1);
+					while(removedDays >= m.getNumberOfDays(y)){
+						removedDays -= m.getNumberOfDays(y);
+						removedMonths++;
+					}
+					
+					dateTocompare.setDate(
+							y-removedYears, 
+							m.getValue()- removedMonths,
+							d-removedDays);
+					
+					date.removeDays(daysToremove);
+					
+					assertTrue(date.equals(dateTocompare));
+					
+				}
+			}
+		}
 
-		assertEquals(9, date.getDay());
-
+		
 	}
 
 	@Test
 	public void removeMonths() {
 
-		OOSCDate date = new OOSCDate(2016, 6, 10);
+		Random r = new Random();
+		int monthsToremove;
+		int removedYears;
+		int removedMonths;
+		
+		OOSCDate date,dateTocompare;
+		
+		for(int y = 1; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					
+					date = new OOSCDate(y,m,d);
+					dateTocompare = new OOSCDate(y,m,d);
+					
+					monthsToremove = r.nextInt(date.toNumberOfMonths()) + date.getMonth();
+					
+					removedYears = monthsToremove / 12;
+					removedMonths = monthsToremove % 12;
+					
+					date.setYear(y - removedYears);
+					date.setMonth(m.getValue() - removedMonths);
+					
+					dateTocompare.removeMonths(monthsToremove);
+					 
+					assertTrue(date.equals(dateTocompare));
+				
+				}
+			}
+		}
 
-		date.removeMonths(3);
-
-		assertEquals(3, date.getMonth());
 
 	}
 
 	@Test
 	public void removeYears() {
 
-		OOSCDate date = new OOSCDate(2016, 11, 10);
-
-		date.removeYears(2);
-
-		assertEquals(2014, date.getYear());
+		Random r = new Random();
+		int yearsToremove;
+		
+		OOSCDate date;
+		
+		for(int y = 1; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					
+					yearsToremove = r.nextInt(y);
+					
+					date = new OOSCDate(y,m,d);
+					
+					date.removeYears(yearsToremove);
+					
+					assertEquals(y-yearsToremove,date.getYear());
+				}
+			}
+		}
 
 	}
 
 	@Test
 	public void daysBetween() {
 
-		OOSCDate date1 = new OOSCDate(2016, 11, 10);
-		OOSCDate date2 = new OOSCDate(2016, 11, 9);
-
-		assertEquals(1, DateInterface.daysBetween(date1, date2));
-
+	for (int i=0;i<100;++i){
+		
+			Random r = new Random();
+			
+			int y1 = r.nextInt(5000);
+			Month m1 = Month.month(r.nextInt(12) + 1);
+			int d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
+		
+			OOSCDate date = new OOSCDate(y1,m1,d1);
+			
+			int y2 = r.nextInt(y1);
+			
+			Month m2 ;
+			if(y1 == y2){
+				 m2 = Month.month(m1.getValue());
+			}else{
+				 m2 = Month.month(r.nextInt(12) + 1);	
+			}
+			
+			int d2 ;
+			if(y1 == y2 & m1 == m2){
+				d2 = r.nextInt(d1) + 1;
+			}else{
+				d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
+			}
+			
+			OOSCDate dateTocompare = new OOSCDate(y2,m2,d2);
+			
+			int daysBetween = date.toNumberOfDays() - dateTocompare.toNumberOfDays();
+			
+			assertEquals(DateInterface.daysBetween(date, dateTocompare), daysBetween);
+			
+		}
 	}
 
 	@Test
 	public void monthBetween() {
-		OOSCDate date1 = new OOSCDate(2016, 10, 10);
-		OOSCDate date2 = new OOSCDate(2016, 12, 9);
-
-		assertEquals(2, DateInterface.monthBetween(date1, date2));
-
+		
+		for(int i = 0 ; i < 100 ; ++i){
+			
+			Random r = new Random();
+			
+			int y1 = r.nextInt(5000);
+			
+			Month m1 = Month.month(r.nextInt(12) + 1);
+			int d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
+		
+			OOSCDate date = new OOSCDate(y1,m1,d1);
+			
+			int y2 = r.nextInt(y1);
+			Month m2 ;
+			if(y1 == y2){
+				 m2 = Month.month(m1.getValue());
+			}else{
+				 m2 = Month.month(r.nextInt(12) + 1);	
+			}
+			int d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
+			
+			OOSCDate dateTocompare = new OOSCDate(y2,m2,d2);
+			
+			int monthsBetween = date.toNumberOfMonths() - date.toNumberOfMonths();
+			
+			assertEquals(DateInterface.monthBetween(date, dateTocompare), monthsBetween);
+			
+		}
+		
+	}
+	
+	@Test
+	public void yearsBetween(){
+		
+		for(int i = 0 ; i < 100 ; ++i){
+			
+			Random r = new Random();
+			
+			int y1 = r.nextInt(5000);
+			Month m1 = Month.month(r.nextInt(12) + 1);
+			int d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
+		
+			OOSCDate date = new OOSCDate(y1,m1,d1);
+			
+			int y2 = r.nextInt(y1-1);
+			Month m2 = Month.month(r.nextInt(12) + 1);
+			int d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
+			
+			OOSCDate dateTocompare = new OOSCDate(y2,m2,d2);
+			
+			int yearsBetween = y1-y2;
+			
+			assertEquals(DateInterface.yearBetween(date, dateTocompare), yearsBetween);
+			
+		}
+		
 	}
 
 	@Test
 	public void timeBetween() {
-
-		OOSCDate date1 = new OOSCDate(2016, 11, 12);
-		OOSCDate date2 = new OOSCDate(2016, 11, 10);
-
-		assertEquals(2, date1.timeBetween(2, date2));
 
 	}
 
@@ -296,14 +565,48 @@ public class OOSCDateTest {
 //		 */
 //
 //	}
+	
+	@Test
+	public void cloneTest(){
+		
+		OOSCDate date;
+		OOSCDate clonedDate;
+		
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					
+				date = new OOSCDate(y,m,d);	
+				clonedDate = (OOSCDate)date.clone();
+				
+				assertTrue(date.equals(clonedDate));
+					
+				}
+			}
+		}
+				
+	}
 
 	@Test
 	public void equal() {
-		OOSCDate date1 = new OOSCDate(2016, 11, 10);
-		OOSCDate date2 = new OOSCDate(2016, 11, 10);
 
-		// assertEquals(date1,date2);
-		assertTrue(date1.equals(date2));
+		OOSCDate date1;
+		OOSCDate date2;
+		Boolean isEqual;
+		
+		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
+			for(Month m : Month.values()){
+				for(int d=1; d<=m.getNumberOfDays(y); ++d){
+					date1 = new OOSCDate(y,m,d);
+					date2 = new OOSCDate(y,m,d);
+					
+					isEqual = date1.equals(date2);
+					assertTrue(isEqual);
+				}
+			}
+		}
+		
 	}
-
+	
 }
