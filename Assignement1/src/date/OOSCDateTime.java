@@ -41,7 +41,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
     /**
      * Set hours, minutes and seconds.
      *
-     * @param hours   hours to set, from 0 to 23
+     * @param hours  hours to set, from 0 to 23
      * @param minutes minutes to set, from 0 to 59
      * @param seconds seconds to set, from 0 to 59
      */
