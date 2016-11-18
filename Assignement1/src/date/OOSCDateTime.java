@@ -294,7 +294,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
      */
     protected static void assertDateTime(int year, int month, int day, int hours, int minutes, int seconds) {
     	
-    	assert(DateInterface.checkDate(year, month, day));
+    	assert(checkDate(year, month, day));
         assertTime(hours, minutes, seconds);
     }
 

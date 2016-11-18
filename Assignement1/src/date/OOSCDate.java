@@ -7,8 +7,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.lang.IllegalArgumentException;
+
+
+/**
+ * OCL: The invariant has to be respected
+ * 
+ * @invariant  0 <= year && 1 <= day <= month.getNumberOfDays(year);
+ * 
+ */
 public class OOSCDate implements DateInterface, Cloneable {
 
+	
+	
+	
 	/* ############################################# */
 	/* ############################################# */
 	/* Attributes */
@@ -34,7 +46,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @throws assertionError
 	 */
 	public OOSCDate(int year, Month month, int day) {
-		assert (DateInterface.checkDate(year, month, day)) : "Date not valide";
+		assert (checkDate(year, month, day)) : "Date not valide";
 
 		this.year = year;
 		this.month = month;
@@ -59,7 +71,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @throws assertionError
 	 */
 	public OOSCDate(int year, int month, int day) {
-		assert (DateInterface.checkDate(year, month, day)) : "Date not valide";
+		assert (checkDate(year, month, day)) : "Date not valide";
 
 		Month month_ = Month.month(month);
 		this.year = year;
@@ -93,7 +105,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	@Override
 	public void setDate(int year, int month, int day) {
 		assert (invariant()) : "The invariante is not respected";
-		assert (DateInterface.checkDate(year, month, day)) : "Date not valide";
+		assert (checkDate(year, month, day)) : "Date not valide";
 
 		Month month_ = Month.month(month);
 		setDate(year, month_, day);
@@ -107,7 +119,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	@Override
 	public void setDate(int year, Month month, int day) {
 		assert (invariant()) : "The invariante is not respected";
-		assert (DateInterface.checkDate(year, month, day)) : "Date not valide";
+		assert (checkDate(year, month, day)) : "Date not valide";
 
 		setYear(year);
 		setMonth(month);
@@ -160,7 +172,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	@Override
 	public void setDay(int day) {
 		assert (invariant()) : "The invariante is not respected";
-		assert (DateInterface.checkDate(year, month, day)) : "The day is not valide for this month and year";
+		assert (checkDate(year, month, day)) : "The day is not valide for this month and year";
 
 		this.day = day;
 
@@ -201,7 +213,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 		int d = this.day;
 
-		assert (DateInterface.checkDate(year, month, d)) : "The returned day is not correct";
+		assert (checkDate(year, month, d)) : "The returned day is not correct";
 		assert (invariant()) : "The invariante is not respected";
 
 		return d;
@@ -231,8 +243,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 		assert (invariant()) : "The invariante is not respected";
 		assert (0 <= monthsToAdd) : "You can not add negative month";
 		DateInterface pre = (DateInterface) this.clone();
-		
-		
+
 		int yearToAdd = (this.month.getValue() + monthsToAdd - 1) / 12;
 		int newMonth = (this.month.getValue() + monthsToAdd - 1) % 12 + 1;
 
@@ -270,11 +281,8 @@ public class OOSCDate implements DateInterface, Cloneable {
 		DateInterface newDate = DateInterface.toDateInterface(toNumberOfDays() - daysToRemove);
 		setDate(newDate.getYear(), newDate.getMonth(), newDate.getDay());
 
-		DateInterface test = (DateInterface) this.clone(); // TODO: Prevent for
-															// parsing errors
-		
-		
-		
+		DateInterface test = (DateInterface) this.clone();
+
 		test.addDays(daysToRemove);
 		test.removeDays(daysToRemove);
 		assert (this.equals(test)) : "Adding days and remove them sould be inverse function";
@@ -320,15 +328,14 @@ public class OOSCDate implements DateInterface, Cloneable {
 	/* Certain-time-between functions */
 
 	@Override
-	public int timeBetween(int type, DateInterface date1) {
+	public int timeBetween(int type, DateInterface date1) throws IllegalArgumentException {
 		assert (invariant()) : "The invariante is not respected";
 		assert (type == DATETYPE_DAY || type == DATETYPE_MONTH || type == DATETYPE_YEAR) : "type is wrong";
 
 		if (type == DATETYPE_DAY) {
 			int dayBetween = DateInterface.daysBetween(this, date1);
 
-			DateInterface test = (DateInterface) this.clone(); // TODO: Error
-																// parsing
+			DateInterface test = (DateInterface) this.clone();
 			test.addDays(dayBetween);
 			assert (test.equals(date1)) : "Addind the days between the 2 dates at this, should be equal to data1";
 			assert (invariant()) : "The invariante is not respected";
@@ -337,8 +344,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 		} else if (type == DATETYPE_MONTH) {
 			int monthBetween = DateInterface.monthBetween(this, date1);
 
-			DateInterface test = (DateInterface) this.clone(); // TODO: Error
-																// parsing
+			DateInterface test = (DateInterface) this.clone();
 			test.addMonths(monthBetween);
 			assert (test.equals(date1)) : "Addind the month between the 2 dates at this, should be equal to data1";
 			assert (invariant()) : "The invariante is not respected";
@@ -347,16 +353,14 @@ public class OOSCDate implements DateInterface, Cloneable {
 		} else if (type == DATETYPE_YEAR) {
 			int yearBetween = DateInterface.yearBetween(this, date1);
 
-			DateInterface test = (DateInterface) this.clone(); // TODO: Error
-																// parsing
+			DateInterface test = (DateInterface) this.clone();
 			test.addYears(yearBetween);
 			assert (test.equals(date1)) : "Addind the year between the 2 dates at this, should be equal to data1";
 			assert (invariant()) : "The invariante is not respected";
 
 			return yearBetween;
 		} else {
-			// TODO: throw error
-			return 0;
+			throw new IllegalArgumentException("Type have to 0, 1 or 2");
 		}
 	}
 
@@ -364,36 +368,44 @@ public class OOSCDate implements DateInterface, Cloneable {
 	/* Other function */
 
 	@Override
-	public void synchWithUTCTimeserver() {
-		// try {
-		// // get URL content
-		// URL url = new URL("http://www.timeapi.org/utc/now");
-		// URLConnection conn = url.openConnection();
-		//
-		// // open the stream and put it into BufferedReader
-		// BufferedReader br = new BufferedReader(new
-		// InputStreamReader(conn.getInputStream()));
-		//
-		// String inputLine = br.readLine();
-		// if (inputLine == null) {
-		// // TODO: Throw errors
-		// } else {
-		// String[] format = inputLine.split("T");
-		// if (format.length < 3) {
-		// // TODO: Throw errors
-		// } else {
-		// // String[] oosc = format[0].split("T");
-		// // TODO: Deal with erros
-		// }
-		//
-		// }
-		//
-		// br.close();
-		// } catch (MalformedURLException e) {
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+	public void synchWithUTCTimeserver() throws Exception {
+		try {
+			// get URL content
+			URL url = new URL("http://www.timeapi.org/utc/now");
+			URLConnection conn = url.openConnection();
+
+			// open the stream and put it into BufferedReader
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+
+			String inputLine = br.readLine();  // throws IOException
+			if (inputLine == null) {
+				throw new NullPointerException("No data in http://www.timeapi.org/utc/now");
+			} else {
+				String[] format = inputLine.split("T");
+				if (format.length < 2) {
+					throw new IllegalArgumentException("The format is invalid: y-m-dT...");
+				} else {
+					String[] ymd = format[0].split("-");
+					if(ymd.length != 3){
+						throw new IllegalArgumentException("The format is invalid: y-m-dT...");
+					}
+					else{
+						int y =Integer.parseInt(ymd[0]);
+						int m =Integer.parseInt(ymd[1]);
+						int d =Integer.parseInt(ymd[2]);
+						
+						setDate(y, m, d);
+					}
+				}
+			}
+
+			br.close();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/* ############################################# */
@@ -431,7 +443,42 @@ public class OOSCDate implements DateInterface, Cloneable {
 	/* ############################################# */
 	/* ############################################# */
 	/* Invariant function */
+	/**
+	 * OCL: Assume nothing: immutable
+	 * 
+	 * 
+	 * Check if the date is valid
+	 * 
+	 * @param year
+	 *            The year (positive or null)
+	 * @param month
+	 *            The month
+	 * @param day
+	 *            The day how as to correspond this the month and the year
+	 * @return True if the date is valid, false otherwise.
+	 */
+	public static Boolean checkDate(int year, Month month, int day) {
+		return 0 <= year && 1 <= day  && day <= month.getNumberOfDays(year);
+	}
 
+	/**
+	 * OCL: Assume nothing: immutable
+	 * 
+	 * 
+	 * Check if the date is valid
+	 * 
+	 * @param year
+	 *            The year (positive or null)
+	 * @param month
+	 *            The month (1 for January and 12 for December)
+	 * @param day
+	 *            The day how as to correspond this the month and the year
+	 * @return True if the date is valid, false otherwise.
+	 */
+	public static Boolean checkDate(int year, int month, int day) {
+		Month month_ = Month.month(month);
+		return checkDate(year, month_, day);
+	}
 	/**
 	 * OCL: Assume nothing: immutable
 	 * 
@@ -441,7 +488,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @return True if the current date is valid, false otherwise.
 	 */
 	private Boolean invariant() {
-		return DateInterface.checkDate(this.year, this.month, this.day);
+		return checkDate(this.year, this.month, this.day);
 	}
 
 	/* ############################################# */
@@ -485,34 +532,43 @@ public class OOSCDate implements DateInterface, Cloneable {
 			return isEqual;
 		}
 	}
+
 	@Override
 	public String toString() {
 		assert (invariant()) : "The invariante is not respected";
 		return "Year: " + year + ",Month: " + month.toString() + ",Day: " + day;
 	}
 
-	
-    /**
-     * Assert that the given date is equal to the input date.
-     *
-     * @param year  year, from 1 to MAX_SUPPORTED_YEAR.
-     * @param month month, from 1 to 12.
-     * @param day   day, from 1 to the maximal day in the input month with respect to the input year.
-     */
-    protected void assertEqualsDate(int year, int month, int day) {
-        assert isEqualsDate(year, month, day);
-    }
+	/**
+	 * Assert that the given date is equal to the input date.
+	 *
+	 * @param year
+	 *            year, from 1 to MAX_SUPPORTED_YEAR.
+	 * @param month
+	 *            month, from 1 to 12.
+	 * @param day
+	 *            day, from 1 to the maximal day in the input month with respect
+	 *            to the input year.
+	 */
+	protected void assertEqualsDate(int year, int month, int day) {
+		assert isEqualsDate(year, month, day);
+	}
 
-    /**
-     * Determine if the given date is equal to the input date.
-     *
-     * @param year  year, from 1 to MAX_SUPPORTED_YEAR.
-     * @param month month, from 1 to 12.
-     * @param day   day, from 1 to the maximal day in the input month with respect to the input year.
-     * @return true if the given date is equal to the input date and false otherwise.
-     */
-    protected boolean isEqualsDate(int year, int month, int day) {
-        return getYear() == year && getMonth() == month && getDay() == day;
-    }
+	/**
+	 * Determine if the given date is equal to the input date.
+	 *
+	 * @param year
+	 *            year, from 1 to MAX_SUPPORTED_YEAR.
+	 * @param month
+	 *            month, from 1 to 12.
+	 * @param day
+	 *            day, from 1 to the maximal day in the input month with respect
+	 *            to the input year.
+	 * @return true if the given date is equal to the input date and false
+	 *         otherwise.
+	 */
+	protected boolean isEqualsDate(int year, int month, int day) {
+		return getYear() == year && getMonth() == month && getDay() == day;
+	}
 
 }

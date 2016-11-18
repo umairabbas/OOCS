@@ -285,10 +285,11 @@ public interface DateInterface {
 	 *         Respectively same result as daysBetween(this, date1),
 	 *         monthBetween(this, date1), yearBetween(this, date1)
 	 */
-	public int timeBetween(int type, DateInterface date1);
+	public int timeBetween(int type, DateInterface date1) throws IllegalArgumentException;
 
 	/* ############################################# */
 	/* Other function */
+
 
 	/**
 	 * OCL: Assume nothing: immutable
@@ -297,13 +298,16 @@ public interface DateInterface {
 	 * 
 	 * Synchronize this with the server date available at address
 	 * http://www.timeapi.org/utc/now
+	 *
+	 * @throws Exception: if no connection: IOException
+	 * if no access to the data: NullPointerException
+	 * if the format is not correct: IllegalArgumentException
+	 * if the parsing get wrong: NumberFormatException
 	 */
-	public void synchWithUTCTimeserver();
+	public void synchWithUTCTimeserver() throws Exception;
 
 	/* ############################################# */
 	/* Convert into an other representation */
-
-	// TODO: toNumberOfDays 1 January 0000 -> 0????
 	
 	/**
 	 * OCL: Assume nothing: immutable
@@ -318,8 +322,6 @@ public interface DateInterface {
 	 */
 	public int toNumberOfDays();
 
-	// TODO: toNumberOfDays 1 January 0000 -> 0????
-	// TODO: OCL?
 	/**
 	 * OCL: Assume nothing: immutable
 	 * 
@@ -515,44 +517,9 @@ public interface DateInterface {
 
 	/* ############################################# */
 	/* ############################################# */
-	/* Invariant function */
+	/* Other functions */
 
-	/**
-	 * OCL: Assume nothing: immutable
-	 * 
-	 * 
-	 * Check if the date is valid
-	 * 
-	 * @param year
-	 *            The year (positive or null)
-	 * @param month
-	 *            The month
-	 * @param day
-	 *            The day how as to correspond this the month and the year
-	 * @return True if the date is valid, false otherwise.
-	 */
-	public static Boolean checkDate(int year, Month month, int day) {
-		return 0 <= year && 1 <= day  && day <= month.getNumberOfDays(year);
-	}
 
-	/**
-	 * OCL: Assume nothing: immutable
-	 * 
-	 * 
-	 * Check if the date is valid
-	 * 
-	 * @param year
-	 *            The year (positive or null)
-	 * @param month
-	 *            The month (1 for January and 12 for December)
-	 * @param day
-	 *            The day how as to correspond this the month and the year
-	 * @return True if the date is valid, false otherwise.
-	 */
-	public static Boolean checkDate(int year, int month, int day) {
-		Month month_ = Month.month(month);
-		return checkDate(year, month_, day);
-	}
 
 	/**
 	 * OCL: Assume nothing: immutable
