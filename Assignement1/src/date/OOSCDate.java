@@ -484,11 +484,34 @@ public class OOSCDate implements DateInterface, Cloneable {
 			return isEqual;
 		}
 	}
-
 	@Override
 	public String toString() {
 		assert (invariant()) : "The invariante is not respected";
 		return "Year: " + year + ",Month: " + month.toString() + ",Day: " + day;
 	}
+
+	
+    /**
+     * Assert that the given date is equal to the input date.
+     *
+     * @param year  year, from 1 to MAX_SUPPORTED_YEAR.
+     * @param month month, from 1 to 12.
+     * @param day   day, from 1 to the maximal day in the input month with respect to the input year.
+     */
+    protected void assertEqualsDate(int year, int month, int day) {
+        assert isEqualsDate(year, month, day);
+    }
+
+    /**
+     * Determine if the given date is equal to the input date.
+     *
+     * @param year  year, from 1 to MAX_SUPPORTED_YEAR.
+     * @param month month, from 1 to 12.
+     * @param day   day, from 1 to the maximal day in the input month with respect to the input year.
+     * @return true if the given date is equal to the input date and false otherwise.
+     */
+    protected boolean isEqualsDate(int year, int month, int day) {
+        return getYear() == year && getMonth() == month && getDay() == day;
+    }
 
 }

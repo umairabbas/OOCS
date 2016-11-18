@@ -7,6 +7,8 @@ public interface DateTimeInterface extends DateInterface{
     int DATETYPE_SECOND = 1;
 
     void setTime(int hours, int minutes, int seconds);
+    
+    String getTime();
 
     void setDateTime(int year, int month, int day, int hours, int minutes, int seconds);
 
@@ -36,5 +38,4 @@ public interface DateTimeInterface extends DateInterface{
 
     long timeBetween(int type, DateTimeInterface date1);
 
-    long getTotalSeconds();
 }
