@@ -63,7 +63,7 @@ public class OOSCDateTimeTest {
 		assertEquals(0, test.getSeconds());
 	}
 	
-	
+
 	
 	
 	
