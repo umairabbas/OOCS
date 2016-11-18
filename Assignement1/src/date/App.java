@@ -25,7 +25,7 @@ public class App {
 			System.out.print(e.toString());
 		    System.exit(0);
 		}  
-		
+
 	}
 
 }

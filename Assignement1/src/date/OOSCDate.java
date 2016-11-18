@@ -230,18 +230,16 @@ public class OOSCDate implements DateInterface, Cloneable {
 	public void addMonths(int monthsToAdd) {
 		assert (invariant()) : "The invariante is not respected";
 		assert (0 <= monthsToAdd) : "You can not add negative month";
-
+		DateInterface pre = (DateInterface) this.clone();
+		
+		
 		int yearToAdd = (this.month.getValue() + monthsToAdd - 1) / 12;
 		int newMonth = (this.month.getValue() + monthsToAdd - 1) % 12 + 1;
 
 		addYears(yearToAdd);
 		setMonth(newMonth);
 
-		DateInterface test = (DateInterface) this.clone(); // TODO: Prevent for
-															// parsing errors
-		test.removeMonths(monthsToAdd);
-		test.addMonths(monthsToAdd);
-		assert (this.equals(test)) : "Adding months and remove them sould be inverse function";
+		//assert (this.toNumberOfMonths() == pre.toNumberOfMonths() + monthsToAdd) : "OCL not repected";
 		assert (invariant()) : "The invariante is not respected";
 	}
 
