@@ -239,7 +239,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 		addYears(yearToAdd);
 		setMonth(newMonth);
 
-		//assert (this.toNumberOfMonths() == pre.toNumberOfMonths() + monthsToAdd) : "OCL not repected";
+		assert (this.toNumberOfMonths() == pre.toNumberOfMonths() + monthsToAdd) : "OCL not repected";
 		assert (invariant()) : "The invariante is not respected";
 	}
 
@@ -272,6 +272,9 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 		DateInterface test = (DateInterface) this.clone(); // TODO: Prevent for
 															// parsing errors
+		
+		
+		
 		test.addDays(daysToRemove);
 		test.removeDays(daysToRemove);
 		assert (this.equals(test)) : "Adding days and remove them sould be inverse function";

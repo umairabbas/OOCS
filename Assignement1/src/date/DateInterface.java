@@ -214,6 +214,12 @@ public interface DateInterface {
 	/* remove functions */
 
 	/**
+	 * OCL: removeDays(int daysToRemove) Assume that the number of day to remove is positive or null
+	 * 
+	 * @pre 0 <= daysToRemove
+	 * @post removeDays() == removeDays()@pre - daysToAdd
+	 * 
+	 * 
 	 * Remove a number of day to this date
 	 * 
 	 * @param daysToRemove
@@ -223,6 +229,12 @@ public interface DateInterface {
 	public void removeDays(int daysToRemove);
 
 	/**
+	 * OCL: removeMonths(int monthsToRemove) Assume that the number of month to remove is positive or null
+	 * 
+	 * @pre 0 <= monthsToRemove
+	 * @post removeMonths() == removeMonths()@pre - monthsToRemove
+	 * 
+	 * 
 	 * Remove a number of month to this date. Look that the days will
 	 * automatically be readjusted to correspond to the new month in case of
 	 * invalidity. Example: 31 July - 1 month -> 30 June
@@ -234,6 +246,12 @@ public interface DateInterface {
 	public void removeMonths(int monthsToRemove);
 
 	/**
+	 * OCL: removeYears(int yearsToRemove) Assume that the number of year to remove is positive or null
+	 * 
+	 * @pre 0 <= yearsToRemove
+	 * @post removeYears() == removeYears()@pre - yearsToRemove
+	 * 
+	 * 
 	 * Remove a number of year to this date. Look that the days will
 	 * automatically be readjusted to correspond to the new year in case of
 	 * invalidity. Example: 29 February 2000 - 1 year -> 28 February 1999
@@ -248,6 +266,14 @@ public interface DateInterface {
 	/* Certain-time-between functions */
 
 	/**
+	 * OCL: timeBetween(int type, DateInterface date1) Assume that the type is correct (1, 2 or 3)
+	 * 
+	 * @pre type == 0 || type == 1 || type == 2
+	 * @post if(type == 0) return == yearBetween(this, date1))
+	 * @post if(type == 1) return == monthBetween(this, date1))
+	 * @post if(type == 2) return == dayBetween(this, date1))
+	 * 
+	 * 
 	 * Compute time between the current dates in terms of day, month or year.
 	 * 
 	 * @param type
