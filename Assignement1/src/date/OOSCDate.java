@@ -9,18 +9,14 @@ import java.net.URLConnection;
 
 import java.lang.IllegalArgumentException;
 
-
 /**
  * OCL: The invariant has to be respected
  * 
- * @invariant  0 <= year && 1 <= day <= month.getNumberOfDays(year);
+ * @invariant 0 <= year && 1 <= day <= month.getNumberOfDays(year);
  * 
  */
 public class OOSCDate implements DateInterface, Cloneable {
 
-	
-	
-	
 	/* ############################################# */
 	/* ############################################# */
 	/* Attributes */
@@ -369,43 +365,36 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public void synchWithUTCTimeserver() throws Exception {
-		try {
-			// get URL content
-			URL url = new URL("http://www.timeapi.org/utc/now");
-			URLConnection conn = url.openConnection();
+		// get URL content
+		URL url = new URL("http://www.timeapi.org/utc/now");
+		URLConnection conn = url.openConnection();
 
-			// open the stream and put it into BufferedReader
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		// open the stream and put it into BufferedReader
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-
-			String inputLine = br.readLine();  // throws IOException
-			if (inputLine == null) {
-				throw new NullPointerException("No data in http://www.timeapi.org/utc/now");
+		String inputLine = br.readLine(); // throws IOException
+		if (inputLine == null) {
+			throw new NullPointerException("No data in http://www.timeapi.org/utc/now");
+		} else {
+			String[] format = inputLine.split("T");
+			if (format.length < 2) {
+				throw new IllegalArgumentException("The format is invalid: y-m-dT...");
 			} else {
-				String[] format = inputLine.split("T");
-				if (format.length < 2) {
+				String[] ymd = format[0].split("-");
+				if (ymd.length != 3) {
 					throw new IllegalArgumentException("The format is invalid: y-m-dT...");
 				} else {
-					String[] ymd = format[0].split("-");
-					if(ymd.length != 3){
-						throw new IllegalArgumentException("The format is invalid: y-m-dT...");
-					}
-					else{
-						int y =Integer.parseInt(ymd[0]);
-						int m =Integer.parseInt(ymd[1]);
-						int d =Integer.parseInt(ymd[2]);
-						
-						setDate(y, m, d);
-					}
+					int y = Integer.parseInt(ymd[0]);
+					int m = Integer.parseInt(ymd[1]);
+					int d = Integer.parseInt(ymd[2]);
+
+					setDate(y, m, d);
 				}
 			}
-
-			br.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
+		br.close();
+
 	}
 
 	/* ############################################# */
@@ -458,7 +447,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @return True if the date is valid, false otherwise.
 	 */
 	public static Boolean checkDate(int year, Month month, int day) {
-		return 0 <= year && 1 <= day  && day <= month.getNumberOfDays(year);
+		return 0 <= year && 1 <= day && day <= month.getNumberOfDays(year);
 	}
 
 	/**
@@ -479,6 +468,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 		Month month_ = Month.month(month);
 		return checkDate(year, month_, day);
 	}
+
 	/**
 	 * OCL: Assume nothing: immutable
 	 * 
