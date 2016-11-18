@@ -231,8 +231,8 @@ public class OOSCDate implements DateInterface, Cloneable {
 		assert (invariant()) : "The invariante is not respected";
 		assert (0 <= monthsToAdd) : "You can not add negative month";
 
-		int yearToAdd = (this.month.getValue() + monthsToAdd) / 12;
-		int newMonth = (this.month.getValue() + monthsToAdd) % 12;
+		int yearToAdd = (this.month.getValue() + monthsToAdd - 1) / 12;
+		int newMonth = (this.month.getValue() + monthsToAdd - 1) % 12 + 1;
 
 		addYears(yearToAdd);
 		setMonth(newMonth);
@@ -362,37 +362,37 @@ public class OOSCDate implements DateInterface, Cloneable {
 	/* ############################################# */
 	/* Other function */
 
-
 	@Override
 	public void synchWithUTCTimeserver() {
-//		try {
-//			// get URL content
-//			URL url = new URL("http://www.timeapi.org/utc/now");
-//			URLConnection conn = url.openConnection();
-//
-//			// open the stream and put it into BufferedReader
-//			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//
-//			String inputLine = br.readLine();
-//			if (inputLine == null) {
-//				// TODO: Throw errors
-//			} else {
-//				String[] format = inputLine.split("T");
-//				if (format.length < 3) {
-//					// TODO: Throw errors
-//				} else {
-//					// String[] oosc = format[0].split("T");
-//					// TODO: Deal with erros
-//				}
-//
-//			}
-//
-//			br.close();
-//		} catch (MalformedURLException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// // get URL content
+		// URL url = new URL("http://www.timeapi.org/utc/now");
+		// URLConnection conn = url.openConnection();
+		//
+		// // open the stream and put it into BufferedReader
+		// BufferedReader br = new BufferedReader(new
+		// InputStreamReader(conn.getInputStream()));
+		//
+		// String inputLine = br.readLine();
+		// if (inputLine == null) {
+		// // TODO: Throw errors
+		// } else {
+		// String[] format = inputLine.split("T");
+		// if (format.length < 3) {
+		// // TODO: Throw errors
+		// } else {
+		// // String[] oosc = format[0].split("T");
+		// // TODO: Deal with erros
+		// }
+		//
+		// }
+		//
+		// br.close();
+		// } catch (MalformedURLException e) {
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	/* ############################################# */
@@ -432,6 +432,9 @@ public class OOSCDate implements DateInterface, Cloneable {
 	/* Invariant function */
 
 	/**
+	 * OCL: Assume nothing: immutable
+	 * 
+	 * 
 	 * Check if the current date is valid
 	 * 
 	 * @return True if the current date is valid, false otherwise.

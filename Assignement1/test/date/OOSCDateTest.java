@@ -51,55 +51,13 @@ public class OOSCDateTest {
 		}
 	}
 
-	// @Test
-	// public void toDateInterface(){
-	// int numberOfDays = 3;
-	// OOSCDate test = (OOSCDate) OOSCDate.toDateInterface(numberOfDays);
-	// System.out.println(test.toString());
-	// OOSCDate toCorrespond = new OOSCDate(0, Month.JANUARY, 3);
-	//
-	// assert(test.equals(toCorrespond));
-	//
-	// }
-	//
-
-	@Test
-	public void addDaysTest() {
-		Random r = new Random();
-		for (int i = 0; i < 2; i++) {
-
-			int y = r.nextInt(5000);
-			Month m = Month.month(r.nextInt(12) + 1);
-			int d = r.nextInt(m.getNumberOfDays(y)) + 1;
-			int numberDaysToAdd = Math.abs(r.nextInt());
-
-			OOSCDate testOOSC = new OOSCDate(y, m, d);
-			testOOSC.addDays(0);
-			System.out.println("ddddddd");
-			// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Calendar c = Calendar.getInstance();
-			c.set(y, m.getValue() - 1, d);
-			c.add(Calendar.DATE, numberDaysToAdd);
-			System.out.println("ddddddd");
-			Date javaDate = c.getTime();
-			OOSCDate testJava = new OOSCDate(javaDate.getYear(), javaDate.getMonth() + 1, javaDate.getDate());
-
-			System.out.println("ddddddd");
-			System.out.println(testJava.toString());
-			System.out.println(testOOSC.toString());
-
-			assert (testJava.equals(testOOSC));
-
-		}
-	}
 
 	@Test
 	public void setDate() {
 
 		OOSCDate date = new OOSCDate();
 		OOSCDate dateTocompare;
-		
-		
+
 		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
 			for(Month m : Month.values()){
 				for(int d=1; d<=m.getNumberOfDays(y); ++d){
@@ -244,14 +202,22 @@ public class OOSCDateTest {
 
 	@Test
 	public void addDays() {
-
 		OOSCDate date = new OOSCDate(2016, 2, 8);
 
 		date.addDays(4);
 
 		assertEquals(12, date.getDay());
-
 	}
+	
+	@Test
+	public void addDaysTestOCL(){
+		OOSCDate date = new OOSCDate(2016, 2, 8);
+		OOSCDate datePre = new OOSCDate(2016, 2, 8);
+		date.addDays(9);
+		
+		assertEquals(date.toNumberOfDays() ,  datePre.toNumberOfDays() + 9);
+	}
+	
 
 	@Test
 	public void addMonths() {
@@ -266,7 +232,6 @@ public class OOSCDateTest {
 		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
 			for(Month m : Month.values()){
 				for(int d=1; d<=m.getNumberOfDays(y); ++d){
-		
 					date = new OOSCDate(y,m,d);
 					dateTocompare = new OOSCDate(y,m,d);
 					
@@ -280,11 +245,21 @@ public class OOSCDateTest {
 					dateTocompare.addMonths(monthsToadd); 
 					
 					assertTrue(date.equals(dateTocompare));
-					
 				}
 			}
 		}	
 
+	}
+	
+	
+	@Test
+	public void addMonthsExemple() {
+		OOSCDate date = new OOSCDate(2016, 2, 8);
+
+		date.addMonths(2);
+
+		assertEquals(4, date.getMonth());
+	
 	}
 
 	@Test
@@ -304,7 +279,7 @@ public class OOSCDateTest {
 					date = new OOSCDate(y,m,d);
 					date.addYears(yearsToadd);
 					
-					assertEquals(yearsToadd + y,date.getDay());
+					assertEquals(yearsToadd + y, date.getYear());
 				}
 			}
 		}	
