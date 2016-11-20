@@ -1,19 +1,11 @@
 package date;
 
-import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -21,10 +13,6 @@ public class OOSCDateTest {
 
 	private static final int LIMITE_YEAR_TESTED = 2000;
 
-	// @Test
-	// public void test() {
-	// fail("Not yet implemented");
-	// }
 
 	@Test
 	public void numberOfDaysInYear() {
@@ -654,8 +642,6 @@ public class OOSCDateTest {
 	
 		}
 	}
-
-	
 	
 	@Test
 	public void yearsBetween(){
@@ -685,50 +671,47 @@ public class OOSCDateTest {
 	}
 
 	@Test
-	public void timeBetween() {
+public void timeBetween() {
 
-		int y1,y2,d1,d2;
-		Month m1,m2;
+	int y1,y2,d1,d2;
+	Month m1,m2;
+	
+	OOSCDate date1,date2;
+	
+	int expTimeBetween = 0,actTimeBetween;
+	
+	for (int i=0;i<100;++i){
+		for(int j = 0; j < 3 ; ++j){
+		Random r = new Random();
 		
-		OOSCDate date1,date2;
-		LocalDate ldate1,ldate2;
+		y1 = r.nextInt(5000);
+		m1 = Month.month(r.nextInt(12) + 1);
+		d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
 		
-		int expTimeBetween = 0,actTimeBetween;
+		y2 = r.nextInt(5000);
+		m2 = Month.month(r.nextInt(12) + 1);
+		d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
 		
-		for (int i=0;i<100;++i){
-			for(int j = 0; j < 3 ; ++j){
-			Random r = new Random();
-			
-			y1 = r.nextInt(5000);
-			m1 = Month.month(r.nextInt(12) + 1);
-			d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
-			
-			y2 = r.nextInt(5000);
-			m2 = Month.month(r.nextInt(12) + 1);
-			d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
-			
-			date1 = new OOSCDate(y1,m1,d1);
-			date2 = new OOSCDate(y2,m2,d2);
-			
-			ldate1 = LocalDate.of(y1,m1.getValue(),d1);
-			ldate2 = LocalDate.of(y2,m2.getValue(),d2);
-			
-			actTimeBetween = date1.timeBetween(j, date2);
-			
-			switch (j){
-				case 0: expTimeBetween = (int) ChronoUnit.YEARS.between(ldate2, ldate1);
-					break;
-				case 1: expTimeBetween = (int) ChronoUnit.DAYS.between(ldate2, ldate1);
-					break;
-				case 2: expTimeBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
-					break;
-			}
-			assertEquals(expTimeBetween,actTimeBetween);
-			
-			}
+		date1 = new OOSCDate(y1,m1,d1);
+		date2 = new OOSCDate(y2,m2,d2);
+		
+		actTimeBetween = date1.timeBetween(j, date2);
+		
+		switch (j){
+			case 0: expTimeBetween = DateInterface.yearBetween(date1,date2);
+				break;
+			case 1: expTimeBetween = DateInterface.monthBetween(date1,date2);
+				break;
+			case 2: expTimeBetween = DateInterface.daysBetween(date1,date2);
+				break;
 		}
 		
+		assertEquals(expTimeBetween,actTimeBetween);
+		
+		}
 	}
+	
+}
 
 	@Test(expected = java.lang.AssertionError.class)
 	public void timeBetweenErrorTest() {
