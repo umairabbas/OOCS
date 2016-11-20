@@ -47,6 +47,9 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
      * @param hours  hours to set, from 0 to 23
      * @param minutes minutes to set, from 0 to 59
      * @param seconds seconds to set, from 0 to 59
+     * @param year The year (positive or null)
+	 * @param month The month (1 for January and 12 for December)
+	 * @param day The day, how has to correspond to the month and the year (0 < day < 32)
      */
 	@Override
 	public void setTime(int hours, int minutes, int seconds) {
