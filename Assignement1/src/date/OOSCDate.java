@@ -42,16 +42,16 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @throws assertionError
 	 */
 	public OOSCDate(int year, Month month, int day) {
-		//assert (checkDate(year, month, day)) : "Date not valid";
+		assert (checkDate(year, month, day)) : "Date not valid";
 
 		this.year = year;
 		this.month = month;
 		this.day = day;
 
-		//assert (this.year == year) : "Something went wrong is the year's instantation";
-		//assert (this.month == month) : "Something went wrong is the month's instantation";
-		//assert (this.day == day) : "Something went wrong is the day's instantation";
-		//assert (invariant()) : "Date not valid";
+		assert (this.year == year) : "Something went wrong is the year's instantation";
+		assert (this.month == month) : "Something went wrong is the month's instantation";
+		assert (this.day == day) : "Something went wrong is the day's instantation";
+		assert (invariant()) : "Date not valid";
 	}
 
 	/**
@@ -67,17 +67,17 @@ public class OOSCDate implements DateInterface, Cloneable {
 	 * @throws assertionError
 	 */
 	public OOSCDate(int year, int month, int day) {
-		//assert (checkDate(year, month, day)) : "Date not valid";
+		assert (checkDate(year, month, day)) : "Date not valid";
 
 		Month month_ = Month.month(month);
 		this.year = year;
 		this.month = month_;
 		this.day = day;
 
-		//assert (this.year == year) : "Something went wrong is the year's instantation";
-		//assert (this.month.getValue() == month) : "Something went wrong is the month's instantation";
-		//assert (this.day == day) : "Something went wrong is the day's instantation";
-		//assert (invariant()) : "Date not valid";
+		assert (this.year == year) : "Something went wrong is the year's instantation";
+		assert (this.month.getValue() == month) : "Something went wrong is the month's instantation";
+		assert (this.day == day) : "Something went wrong is the day's instantation";
+		assert (invariant()) : "Date not valid";
 	}
 
 	/**
@@ -88,10 +88,10 @@ public class OOSCDate implements DateInterface, Cloneable {
 		this.month = Month.JANUARY;
 		this.day = 1;
 
-		//assert (this.year == 0) : "Something went wrong is the year's instantation";
-		//assert (this.month == Month.JANUARY) : "Something went wrong is the month's instantation";
-		//assert (this.day == 1) : "Something went wrong is the day's instantation";
-		//assert (invariant()) : "Date not valid";
+		assert (this.year == 0) : "Something went wrong is the year's instantation";
+		assert (this.month == Month.JANUARY) : "Something went wrong is the month's instantation";
+		assert (this.day == 1) : "Something went wrong is the day's instantation";
+		assert (invariant()) : "Date not valid";
 	}
 
 	/* ############################################# */
@@ -100,31 +100,31 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public void setDate(int year, int month, int day) {
-		//assert (invariant()) : "The invariant is not respected";
-		//assert (checkDate(year, month, day)) : "Date not valid";
+		assert (invariant()) : "The invariant is not respected";
+		assert (checkDate(year, month, day)) : "Date not valid";
 
 		Month month_ = Month.month(month);
 		setDate(year, month_, day);
 
-		//assert (this.year == year) : "Something went wrong is the year's assignment";
-		//assert (this.month.getValue() == month) : "Sometin went wrong is the month's assignment";
-		//assert (this.day == day) : "Something went wrong is the day's assignment";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.year == year) : "Something went wrong is the year's assignment";
+		assert (this.month.getValue() == month) : "Someting went wrong is the month's assignment";
+		assert (this.day == day) : "Something went wrong is the day's assignment";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
 	public void setDate(int year, Month month, int day) {
-		//assert (invariant()) : "The invariant is not respected";
-		//assert (checkDate(year, month, day)) : "Date not valid";
+		assert (invariant()) : "The invariant is not respected";
+		assert (checkDate(year, month, day)) : "Date not valid";
 
 		setYear(year);
 		setMonth(month);
 		setDay(day);
 
-		//assert (this.year == year) : "Something went wrong is the year's assignment";
-		//assert (this.month == month) : "Something went wrong is the month's assignment";
-		//assert (this.day == day) : "Something went wrong is the day's assignment";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.year == year) : "Something went wrong is the year's assignment";
+		assert (this.month == month) : "Something went wrong is the month's assignment";
+		assert (this.day == day) : "Something went wrong is the day's assignment";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
@@ -143,26 +143,26 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public void setMonth(int month) {
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 		Month month_ = Month.month(month);
 
 		setMonth(month_);
 
-		//assert (this.month.getValue() == month) : "Something went wrong is the month's assignment";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.month.getValue() == month) : "Something went wrong is the month's assignment";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
 	public void setMonth(Month month) {
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 
 		if (this.day > month.getNumberOfDays(year)) {
 			this.day = month.getNumberOfDays(year);
 		}
 		this.month = month;
 
-		//assert (this.month == month) : "Something went wrong is the month's assignment";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.month == month) : "Something went wrong is the month's assignment";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
@@ -181,36 +181,36 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public int getYear() {
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 
 		int y = this.year;
 
-		//assert (0 <= y) : "The returned year is not correct";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (0 <= y) : "The returned year is not correct";
+		assert (invariant()) : "The invariant is not respected";
 
 		return y;
 	}
 
 	@Override
 	public int getMonth() {
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 
 		int m = this.month.getValue();
 
-		//assert (0 < m && m < 13) : "The returned month is not correct";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (0 < m && m < 13) : "The returned month is not correct";
+		assert (invariant()) : "The invariant is not respected";
 
 		return m;
 	}
 
 	@Override
 	public int getDay() {
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 
 		int d = this.day;
 
-		//assert (checkDate(year, month, d)) : "The returned day is not correct";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (checkDate(year, month, d)) : "The returned day is not correct";
+		assert (invariant()) : "The invariant is not respected";
 
 		return d;
 	}
@@ -228,14 +228,14 @@ public class OOSCDate implements DateInterface, Cloneable {
 		setDate(newDate.getYear(), newDate.getMonth(), newDate.getDay());
 
 		
-//		assert (this.toNumberOfDays() == pre.toNumberOfDays() + daysToAdd) : "OCL conditions not respected";
-//		assert (invariant()) : "The invariant is not respected";
+		assert (this.toNumberOfDays() == pre.toNumberOfDays() + daysToAdd) : "OCL conditions not respected";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
 	public void addMonths(int monthsToAdd) {
-		//assert (invariant()) : "The invariant is not respected";
-		//assert (0 <= monthsToAdd) : "You can not add negative month";
+		assert (invariant()) : "The invariant is not respected";
+		assert (0 <= monthsToAdd) : "You can not add negative month";
 		DateInterface pre = (DateInterface) this.clone();
 
 	
@@ -246,20 +246,20 @@ public class OOSCDate implements DateInterface, Cloneable {
 		
 		setMonth(newMonth);
 
-		//assert (this.toNumberOfMonths() == pre.toNumberOfMonths() + monthsToAdd) : "OCL conditions not repected";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.toNumberOfMonths() == pre.toNumberOfMonths() + monthsToAdd) : "OCL conditions not repected";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	@Override
 	public void addYears(int yearsToAdd) {
-		//assert (invariant()) : "The invariant is not respected";
-		//assert (0 <= yearsToAdd) : "You can not add negative year";
+		assert (invariant()) : "The invariant is not respected";
+		assert (0 <= yearsToAdd) : "You can not add negative year";
 		DateInterface pre = (DateInterface) this.clone();
 
 		setYear(year + yearsToAdd);
 
-		//assert (this.getYear() == pre.getYear() + yearsToAdd) : "OCL conditions not repected";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (this.getYear() == pre.getYear() + yearsToAdd) : "OCL conditions not repected";
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	/* ############################################# */
@@ -323,29 +323,17 @@ public class OOSCDate implements DateInterface, Cloneable {
 		if (type == DATETYPE_DAY) {
 			int dayBetween = DateInterface.daysBetween(this, date1);
 
-			DateInterface test = (DateInterface) this.clone();
-			test.addDays(dayBetween);
-			//assert (test.equals(date1)) : "Addind the days between the 2 dates at this, should be equal to data1";
-			//assert (invariant()) : "The invariant is not respected";
-
+			assert (invariant()) : "The invariant is not respected";
 			return dayBetween;
 		} else if (type == DATETYPE_MONTH) {
 			int monthBetween = DateInterface.monthBetween(this, date1);
-
-			DateInterface test = (DateInterface) this.clone();
-			test.addMonths(monthBetween);
-			//assert (test.equals(date1)) : "Addind the month between the 2 dates at this, should be equal to data1";
-			//assert (invariant()) : "The invariant is not respected";
-
+			
+			assert (invariant()) : "The invariant is not respected";
 			return monthBetween;
 		} else if (type == DATETYPE_YEAR) {
 			int yearBetween = DateInterface.yearBetween(this, date1);
-
-			DateInterface test = (DateInterface) this.clone();
-			test.addYears(yearBetween);
-			//assert (test.equals(date1)) : "Addind the year between the 2 dates at this, should be equal to data1";
-			//assert (invariant()) : "The invariant is not respected";
-
+			
+			assert (invariant()) : "The invariant is not respected";
 			return yearBetween;
 		} else {
 			throw new IllegalArgumentException("Type have to 0, 1 or 2");
@@ -357,6 +345,8 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public void synchWithUTCTimeserver() throws Exception {
+		assert (invariant()) : "The invariant is not respected";
+		
 		// get URL content
 		URL url = new URL("http://www.timeapi.org/utc/now");
 		URLConnection conn = url.openConnection();
@@ -387,6 +377,8 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 		br.close();
 
+		
+		assert (invariant()) : "The invariant is not respected";
 	}
 
 	/* ############################################# */
@@ -408,12 +400,7 @@ public class OOSCDate implements DateInterface, Cloneable {
 		// add number of days in this month
 		nbDays += day;
 
-		
-		
-
-		//DateInterface test = DateInterface.toDateInterface(nbDays); use!!!! 
-		//assert (this.equals(test)) : "toNumberOfDays() and toDateInterface(...) should be inverse function";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (invariant()) : "The invariant is not respected";
 
 		return nbDays;
 	}
@@ -485,10 +472,10 @@ public class OOSCDate implements DateInterface, Cloneable {
 		//assert (invariant()) : "The invariant is not respected";
 		OOSCDate clone = new OOSCDate(year, month, day);
 
-		//assert (getYear() == clone.getYear()) : "Problem when cloning the year";
-		//assert (getMonth() == clone.getMonth()) : "Problem when cloning the month";
-		//assert (getDay() == clone.getDay()) : "Problem when cloning the day";
-		//assert (invariant()) : "The invariant is not respected";
+		assert (getYear() == clone.getYear()) : "Problem when cloning the year";
+		assert (getMonth() == clone.getMonth()) : "Problem when cloning the month";
+		assert (getDay() == clone.getDay()) : "Problem when cloning the day";
+		assert (invariant()) : "The invariant is not respected";
 
 		return clone;
 	}
@@ -510,10 +497,10 @@ public class OOSCDate implements DateInterface, Cloneable {
 			isEqual = isEqual && this.month.equals(oos.month);
 			isEqual = isEqual && this.day == oos.day;
 
-			//assert (!isEqual || (getYear() == oos.getYear())) : "The 2 years has to be equal";
-			//assert (!isEqual || (getMonth() == oos.getMonth())) : "The 2 months has to be equal";
-			//assert (!isEqual || (getDay() == oos.getDay())) : "The 2 days has to be equal";
-			//assert (invariant()) : "The invariant is not respected";
+			assert (!isEqual || (getYear() == oos.getYear())) : "The 2 years has to be equal";
+			assert (!isEqual || (getMonth() == oos.getMonth())) : "The 2 months has to be equal";
+			assert (!isEqual || (getDay() == oos.getDay())) : "The 2 days has to be equal";
+			assert (invariant()) : "The invariant is not respected";
 			return isEqual;
 		}
 	}
