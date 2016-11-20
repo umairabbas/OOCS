@@ -41,7 +41,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
     /**
      * Set hours, minutes and seconds.
      *
-     * @param hours   hours to set, from 0 to 23
+     * @param hours  hours to set, from 0 to 23
      * @param minutes minutes to set, from 0 to 59
      * @param seconds seconds to set, from 0 to 59
      */
@@ -294,7 +294,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
      */
     protected static void assertDateTime(int year, int month, int day, int hours, int minutes, int seconds) {
     	
-    	assert(DateInterface.checkDate(year, month, day));
+    	assert(checkDate(year, month, day));
         assertTime(hours, minutes, seconds);
     }
 
