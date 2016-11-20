@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class OOSCDateTest {
 
-	private static final int LIMITE_YEAR_TESTED = 4000;
+	private static final int LIMITE_YEAR_TESTED = 2000;
 
 	// @Test
 	// public void test() {
