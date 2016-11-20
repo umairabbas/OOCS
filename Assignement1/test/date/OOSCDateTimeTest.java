@@ -71,20 +71,20 @@ public class OOSCDateTimeTest {
 	public void getTimetest() {
 		OOSCDateTime test = new OOSCDateTime();
 		test.setTime(0,0,0);
-		assertEquals("00:00:00", test.getTime());
+		assertTrue("0:0:0".equals(test.getTime()));
 	}
-	@Test
+	@Test(expected = java.lang.Error.class)
 	public void setDateTimeTestYear(){
 		OOSCDateTime test = new OOSCDateTime();
 		test.setDateTime(-1, 0, 0, 0, 0, 0);
 		test.setTime(0,0,0);		
 	}
-	@Test
+	@Test(expected = java.lang.Error.class)
 	public void setDateTimeTestMonth(){
 		OOSCDateTime test = new OOSCDateTime();
 		test.setDateTime(0, -1, 0, 0, 0, 0)	;
 	}
-	@Test
+	@Test(expected = java.lang.Error.class)
 	public void setDateTimeTestDay(){
 		OOSCDateTime test = new OOSCDateTime();
 		test.setDateTime(0, 0, -1, 0, 0, 0);		
@@ -191,12 +191,6 @@ public class OOSCDateTimeTest {
 		}
 	}
 	
-	@Test(expected = java.lang.Error.class)
-	public void addHoursZero() {
-		OOSCDateTime test = new OOSCDateTime();
-		test.addHours(0);
-	}
-	
 	@Test
 	public void addHoursTest() {
 		OOSCDateTime test = new OOSCDateTime();
@@ -233,11 +227,6 @@ public class OOSCDateTimeTest {
 		assertEquals(2, test.getYear());
 	}
 
-	@Test(expected = java.lang.Error.class)
-	public void addMinutesZero() {
-		OOSCDateTime test = new OOSCDateTime();
-		test.addMinutes(0);
-	}
 	
 	@Test
 	public void addMinutesTest() {
@@ -248,7 +237,7 @@ public class OOSCDateTimeTest {
 		assertEquals(1, test.getMinutes());
 		assertEquals(0, test.getSeconds());
 	}
-	
+	@Test
 	public void addMinutesTestNewHour() {
 		OOSCDateTime test = new OOSCDateTime();
 		test.setTime(4, 55, 0);
@@ -257,20 +246,7 @@ public class OOSCDateTimeTest {
 		assertEquals(5, test.getHours());
 		assertEquals(0, test.getSeconds());
 	}
-	
-
-//	public void addMinutesLoop(){
-//		OOSCDateTime test = new OOSCDateTime();
-//		for (int i = 0; i < 24; i++) {
-//			for (int j = 0; j < 60; j++) {
-//				for (int k = 0; k < 60; k++) {
-//		test.setTime(i, j, k);
-//		test.addMinutes(20);
-//		assertEquals(15, test.getMinutes());
-//		assertEquals(5, test.getHours());
-//		assertEquals(0, test.getSeconds());
-//				}
-				
+		
 		
 	}
 	
