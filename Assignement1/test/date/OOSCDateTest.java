@@ -648,53 +648,54 @@ public class OOSCDateTest {
 			
 			actDaysBetween = DateInterface.daysBetween(date1,date2);
 			expDaysBetween = (int) ChronoUnit.DAYS.between(ldate2, ldate1);
+		
 			
 			assertEquals(expDaysBetween,actDaysBetween);
 	
 		}
 	}
 
-//	@Test
-//	public void monthBetween() { // 12 months in one Year???
-//		
-//		int y1,y2,d1,d2;
-//		Month m1,m2;
-//		
-//		OOSCDate date1,date2;
-//		LocalDate ldate1,ldate2;
-//		
-//		int expDaysBetween,actDaysBetween;
-//		
-//		for (int i=0;i<100;++i){
-//		
-//			Random r = new Random();
-//			
-//			y1 = r.nextInt(5000);
-//			m1 = Month.month(r.nextInt(12) + 1);
-//			d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
-//			
-//			y2 = r.nextInt(5000);
-//			m2 = Month.month(r.nextInt(12) + 1);
-//			d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
-//			
-//			date1 = new OOSCDate(y1,m1,d1);
-//			date2 = new OOSCDate(y2,m2,d2);
-//			
-//			ldate1 = LocalDate.of(y1,m1.getValue(),d1);
-//			ldate2 = LocalDate.of(y2,m2.getValue(),d2);
-//			
-//			actDaysBetween = DateInterface.monthBetween(date1,date2);
-//			expDaysBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
-//			
-//			System.out.println(date1.toString());
-//			System.out.println(date2.toString());
-//			System.out.println(actDaysBetween);
-//			System.out.println(expDaysBetween);
-//			System.out.println("");
-//			
-//			assertEquals(expDaysBetween,actDaysBetween);
-//		}	
-//	}
+	@Test
+	public void monthBetween() { // 12 months in one Year???
+		
+		int y1,y2,d1,d2;
+		Month m1,m2;
+		
+		OOSCDate date1,date2;
+		LocalDate ldate1,ldate2;
+		
+		int expDaysBetween,actDaysBetween;
+		
+		for (int i=0;i<100;++i){
+		
+			Random r = new Random();
+			
+			y1 = r.nextInt(5000);
+			m1 = Month.month(r.nextInt(12) + 1);
+			d1 = r.nextInt(m1.getNumberOfDays(y1)) + 1;
+			
+			y2 = r.nextInt(5000);
+			m2 = Month.month(r.nextInt(12) + 1);
+			d2 = r.nextInt(m2.getNumberOfDays(y2)) + 1;
+			
+			date1 = new OOSCDate(y1,m1,d1);
+			date2 = new OOSCDate(y2,m2,d2);
+			
+			ldate1 = LocalDate.of(y1,m1.getValue(),d1);
+			ldate2 = LocalDate.of(y2,m2.getValue(),d2);
+			
+			actDaysBetween = DateInterface.monthBetween(date1,date2);
+			expDaysBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
+			
+			System.out.println(date1.toString());
+			System.out.println(date2.toString());
+			System.out.println(actDaysBetween);
+			System.out.println(expDaysBetween);
+			System.out.println("");
+			
+			assertEquals(1 + expDaysBetween,actDaysBetween);
+		}	
+	}
 	
 	@Test
 	public void yearsBetween(){
@@ -762,7 +763,6 @@ public class OOSCDateTest {
 				case 2: expTimeBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
 					break;
 			}
-			
 			assertEquals(expTimeBetween,actTimeBetween);
 			
 			}
