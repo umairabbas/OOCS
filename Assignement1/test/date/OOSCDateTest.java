@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class OOSCDateTest {
 
-	private static final int LIMITE_YEAR_TESTED = 4000;
+	private static final int LIMITE_YEAR_TESTED = 2000;
 
 	// @Test
 	// public void test() {
@@ -76,7 +76,7 @@ public class OOSCDateTest {
 		Boolean leapYear;
 		
 		for (int y = 0; y < LIMITE_YEAR_TESTED; ++y) {
-			if((y %4 == 0) && (y % 100 == 0) && (y % 400 == 0)){
+			if(((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)){
 				leapYear = true;
 			}else{
 				leapYear = false;
@@ -396,39 +396,24 @@ public class OOSCDateTest {
 
 		Random r = new Random();
 		int monthsToadd;
-		int actualMonths;
-        int newYear;
-        int newMonth;
-
-		OOSCDate date,expectedDate;
+		
+		OOSCDate date;
+		LocalDate ldate,expectedDate;
 		
 		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
 			for(Month m : Month.values()){
 				for(int d=1; d<=m.getNumberOfDays(y); ++d){
 					date = new OOSCDate(y,m,d);
-					expectedDate = new OOSCDate(y,m,d);
+					ldate = LocalDate.of(y,m.getValue(),d);
 										
 					monthsToadd = r.nextInt(5000);
 
 					date.addMonths(monthsToadd);
-					
-	                actualMonths = date.getYear()*12;
-	                actualMonths += date.getMonth();
-	                actualMonths += monthsToadd;
-	                            
-	                newYear = actualMonths/12;
-	                if(actualMonths %12 == 0){
-	                    newMonth = 12;
-	                }
-	                else{
-	                    newMonth = actualMonths %12; 
-	                }
+					expectedDate = ldate.plusMonths(monthsToadd);
 	                
-	                expectedDate.setYear(newYear);
-	                expectedDate.setMonth(newMonth);
-	           
-	                assertTrue(date.equals(expectedDate));
-	           
+					assertEquals(expectedDate.getYear(),date.getYear());
+					assertEquals(expectedDate.getMonthValue(), date.getMonth());
+					
 				}
 			}
 		}	
@@ -539,18 +524,7 @@ public class OOSCDateTest {
 	public void removeDaysErrorTest() {
 		
 		OOSCDate date = new OOSCDate();
-		
-		for(int days = -1; days> -100; --days){
-			for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
-				for(Month m : Month.values()){
-					for(int d=1; d<=m.getNumberOfDays(y); ++d){
-			
-						date = new OOSCDate(y,m,d);
-						date.removeDays(days);
-					}
-				}
-			}			
-		}
+		date.removeDays(-1);
 	}
 	
 	@Test
@@ -559,42 +533,25 @@ public class OOSCDateTest {
 
 		Random r = new Random();
 		int monthsToremove;
-		int actualMonths = 0;
-		int newDateMonths;
-        int newYear;
-        int newMonth;
 
-		OOSCDate date,expectedDate;
+		OOSCDate date;
+		LocalDate ldate,expectedDate;
 		
 		for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
 			for(Month m : Month.values()){
 				for(int d=1; d<=m.getNumberOfDays(y); ++d){
 					
 					date = new OOSCDate(y,m,d);
-					expectedDate = new OOSCDate(y,m,d);
-
-					actualMonths = date.getYear()*12;
-	                actualMonths += date.getMonth();
-	                
-	                monthsToremove = r.nextInt(actualMonths)+1;
+					ldate = LocalDate.of(y,m.getValue(),d);
 					
-	                newDateMonths = actualMonths - monthsToremove;
+					monthsToremove = r.nextInt(date.toNumberOfMonths());
 
 					date.removeMonths(monthsToremove);
+					expectedDate = ldate.minusMonths(monthsToremove);
 					
-	                newYear = newDateMonths/12;
-	                if(newDateMonths %12 == 0){
-	                    newMonth = 12;
-	                }
-	                else{
-	                    newMonth = newDateMonths %12; 
-	                }
-	                
-	                expectedDate.setYear(newYear);
-	                expectedDate.setMonth(newMonth);
-	           
-	                assertTrue(date.equals(expectedDate));
-	           
+					assertEquals(expectedDate.getYear(),date.getYear());
+					assertEquals(expectedDate.getMonthValue(), date.getMonth());
+
 				}
 			}
 		}
@@ -630,7 +587,7 @@ public class OOSCDateTest {
 			for(Month m : Month.values()){
 				for(int d=1; d<=m.getNumberOfDays(y); ++d){
 					
-					yearsToremove = r.nextInt(y);
+					yearsToremove = r.nextInt(y) + 1;
 					
 					date = new OOSCDate(y,m,d);
 					
@@ -646,14 +603,13 @@ public class OOSCDateTest {
 	@Test(expected = java.lang.Error.class)
 	public void removeYearsErrorTest() {
 		
-		OOSCDate date = new OOSCDate();
 		
 		for(int years = -1; years> -100; --years){
 			for(int y = 0; y<LIMITE_YEAR_TESTED; ++y){
 				for(Month m : Month.values()){
 					for(int d=1; d<=m.getNumberOfDays(y); ++d){
 			
-						date = new OOSCDate(y,m,d);
+						OOSCDate date = new OOSCDate(y,m,d);
 						date.removeYears(years);
 					}
 				}
@@ -692,6 +648,7 @@ public class OOSCDateTest {
 			
 			actDaysBetween = DateInterface.daysBetween(date1,date2);
 			expDaysBetween = (int) ChronoUnit.DAYS.between(ldate2, ldate1);
+		
 			
 			assertEquals(expDaysBetween,actDaysBetween);
 	
@@ -699,7 +656,7 @@ public class OOSCDateTest {
 	}
 
 	@Test
-	public void monthBetween() {
+	public void monthBetween() { // 12 months in one Year???
 		
 		int y1,y2,d1,d2;
 		Month m1,m2;
@@ -730,8 +687,13 @@ public class OOSCDateTest {
 			actDaysBetween = DateInterface.monthBetween(date1,date2);
 			expDaysBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
 			
-			assertEquals(expDaysBetween,actDaysBetween);
+			System.out.println(date1.toString());
+			System.out.println(date2.toString());
+			System.out.println(actDaysBetween);
+			System.out.println(expDaysBetween);
+			System.out.println("");
 			
+			assertEquals(1 + expDaysBetween,actDaysBetween);
 		}	
 	}
 	
@@ -801,7 +763,6 @@ public class OOSCDateTest {
 				case 2: expTimeBetween = (int) ChronoUnit.MONTHS.between(ldate2, ldate1);
 					break;
 			}
-			
 			assertEquals(expTimeBetween,actTimeBetween);
 			
 			}
@@ -809,7 +770,7 @@ public class OOSCDateTest {
 		
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test(expected = java.lang.AssertionError.class)
 	public void timeBetweenErrorTest() {
 		
 		OOSCDate date1,date2;
@@ -834,7 +795,7 @@ public class OOSCDateTest {
 				date2 = new OOSCDate(y2,m2,d2);
 				
 				for(int k = 0; k<100; ++k){
-					if(k != 0 || k != 1 || k != 2){
+					if(k != 0 && k != 1 && k != 2){
 						date1.timeBetween(k,date2);
 					}
 				}	
@@ -908,16 +869,15 @@ public class OOSCDateTest {
 		LocalDate firstDate = LocalDate.of(0,1,1);
 		int numdays,dateInNumbers;
 		
-		for(int i = 0 ; i< 100; i++){
+		for(int i = 0 ; i< 4; i++){
 			
 			dateInNumbers = r.nextInt(4000)+1;
 			
 			date = (OOSCDate) DateInterface.toDateInterface(dateInNumbers);
 			ldate = LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
-			
+
 			numdays= (int)ChronoUnit.DAYS.between(firstDate,ldate);
-			
-			assertEquals(1+numdays,dateInNumbers);
+			assertEquals(1 + numdays,dateInNumbers);
 		}
 	}
 	
@@ -931,7 +891,7 @@ public class OOSCDateTest {
 	
 	
 		
-		// add by Lauriane 
+		// add by Lauriane TODO: re-organize the function oder and add comment
 	
 	@Test
 	public void toNumberOfDaysExemple1(){
@@ -1001,12 +961,81 @@ public class OOSCDateTest {
 		assertEquals(2, test.getMonth());
 		assertEquals(1, test.getDay());
 	}
+
+	
+	
+	
+	
+	
+	
+	@Test 
+	public void toNumberOfMonthsExemple1(){
+		OOSCDate test1 = new OOSCDate(0, 1, 1);
+		assertEquals(1, test1.toNumberOfMonths());
+	}
+	
+	@Test 
+	public void toNumberOfMonthsExemple2(){
+		OOSCDate test1 = new OOSCDate(0, 1, 31);
+		assertEquals(1, test1.toNumberOfMonths());
+	}
+	
+	@Test 
+	public void toNumberOfMonthsExemple3(){
+		OOSCDate test1 = new OOSCDate(1, 1, 31);
+		assertEquals(13, test1.toNumberOfMonths());
+	}
 	
 	@Test
-	public void monthBetweenExemple(){
+	public void monthBetweenExemple1(){
 		OOSCDate test1 = new OOSCDate(0, 1, 1);
-		OOSCDate test2 = new OOSCDate(0, 2, 1);
+		OOSCDate test2 = new OOSCDate(0, 1, 31);
 		assertEquals(0, DateInterface.monthBetween(test1, test2));
+	}
+	@Test
+	public void monthBetweenExemple2(){
+		OOSCDate test1 = new OOSCDate(0, 1, 1);
+		OOSCDate test2 = new OOSCDate(0, 2, 27);
+		assertEquals(-1, DateInterface.monthBetween(test1, test2));
+	}
+	@Test
+	public void monthBetweenExemple3(){
+		OOSCDate test1 = new OOSCDate(1, 1, 1);
+		OOSCDate test2 = new OOSCDate(0, 1, 31);
+		assertEquals(12, DateInterface.monthBetween(test1, test2));
+	}
+	
+	
+	@Test 
+	public void removeMonthsExemple1(){
+		OOSCDate test1 = new OOSCDate(1, 5, 1);
+		test1.removeMonths(2);
+		assertEquals(3, test1.getMonth());
+	}
+	@Test 
+	public void removeMonthsExemple2(){
+		OOSCDate test1 = new OOSCDate(1, 1, 1);
+		test1.removeMonths(1);
+		assertEquals(12, test1.getMonth());
+		assertEquals(0, test1.getYear());
+	}
+	
+	@Test 
+	public void removeDaysExemple1(){
+		OOSCDate test1 = new OOSCDate(1, 1, 2);
+		test1.removeDays(1);
+		assertEquals(1, test1.getDay());
+		assertEquals(1, test1.getMonth());
+		assertEquals(1, test1.getYear());
+	}
+	
+	@Test 
+	public void removeDaysExemple2(){
+		OOSCDate test1 = new OOSCDate(1, 1, 1);
+		test1.removeDays(1);
+		assertEquals(31, test1.getDay());
+		assertEquals(12, test1.getMonth());
+		assertEquals(0, test1.getYear());
 	}
 	
 

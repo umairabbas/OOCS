@@ -326,9 +326,9 @@ public interface DateInterface {
 	 * OCL: Assume nothing: immutable
 	 * 
 	 * 
-	 * Transform the current date (this) in the number of month till 1 January
-	 * 0000. Example: toNumberOfMonths 1 January 0000 -> 1 toNumberOfMonths 31
-	 * January 0000 -> 0
+	 * Transform the current date (this) in the number of month till year 0
+	 * 0000. Example: toNumberOfMonths 1 January 0000 -> 1 
+	 * toNumberOfMonths 31 January 0000 -> 1
 	 * 
 	 * @return the number of month till 1 January 0000
 	 */
@@ -353,7 +353,6 @@ public interface DateInterface {
 	 * @return the corresponding DateInterface
 	 */
 	public static DateInterface toDateInterface(int numberOfDays) {
-		// assert(invariant()) : "The invariants is not respected";
 		assert (0 < numberOfDays) : "The number of day has to be positif (not null)";
 
 		DateInterface date;
@@ -372,7 +371,6 @@ public interface DateInterface {
 		date = new OOSCDate(year, month, numberOfDays);
 
 		//assert (date.toNumberOfDays() == numberOfDays) : "toNumberOfDays() and toDateInterface(...) should be inverse function";
-		// assert(invariant()) : "The invariants is not respected";
 		return date;
 	}
 
@@ -399,17 +397,22 @@ public interface DateInterface {
 	public static int daysBetween(DateInterface date1, DateInterface date2) {
 		int daysBt = date1.toNumberOfDays() - date2.toNumberOfDays();
 
-		DateInterface test = DateInterface.clone(date1);
-		test.addDays(daysBt);
-		assert (test.equals(date2)) : "Addind the days between the 2 dates at date1, should be equal to data2";
-
+		if(daysBt >= 0){
+			DateInterface test = DateInterface.clone(date1);
+			test.addDays(daysBt);
+			assert (test.equals(date2)) : "Addind the days between the 2 dates at date1, should be equal to data2";
+		}
+		else{
+			DateInterface test = DateInterface.clone(date2);
+			test.addDays(-daysBt);
+			assert (test.equals(date1)) : "Addind the days between the 2 dates at date1, should be equal to data2";
+		}
+		
 		return daysBt;
 	}
 
 	/**
 	 * OCL: Assume nothing: immutable
-	 * 
-	 * @post date1.addMonth(return) == date2.toNumberOfDays()
 	 * 
 	 * 
 	 *       Compute the number of month between two dates.
@@ -426,13 +429,8 @@ public interface DateInterface {
 	 *         monthBetween 28 January 2000 and 4 January 2000 -> 0
 	 */
 	public static int monthBetween(DateInterface date1, DateInterface date2) {
-
 		int monthBt = date1.toNumberOfMonths() - date2.toNumberOfMonths();
-
-//		DateInterface test = DateInterface.clone(date1);
-//		test.addMonths(monthBt);
-//		assert (test.equals(date2)) : "Addind the month between the 2 dates at date1, should be equal to data2";
-
+		assert (date1.toNumberOfMonths() == monthBt + date2.toNumberOfMonths()) : "Adding the month between the 2 dates at date1, should be equal to data2";
 		return monthBt;
 	}
 
@@ -484,9 +482,10 @@ public interface DateInterface {
 	 */
 	public static Boolean isLeapYear(int year) {
 		assert (0 <= year) : "Negative year are not aload";
-		Boolean isLeap = ((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0));
+		
+		Boolean isLeap = (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0));
 
-		assert (isLeap == ((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)));
+		assert (isLeap == (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)));
 		assert (0 <= year) : "Negative year are not aload";
 		return isLeap;
 	}
