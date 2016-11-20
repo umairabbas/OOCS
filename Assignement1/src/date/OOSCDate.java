@@ -393,12 +393,12 @@ public class OOSCDate implements DateInterface, Cloneable {
 
 	@Override
 	public int toNumberOfDays() {
-		//assert (invariant()) : "The invariante is not respected";
+		//assert (invariant()) : "The invariant is not respected";
 		int nbDays = 0;
 
 		// add number of days from year 0 till this year
 		for (int y = 0; y < year; ++y) {
-			nbDays += DateInterface.numberOfDaysInYear(year);
+			nbDays += DateInterface.numberOfDaysInYear(y);
 		}
 		// add number of days from January 0 till this month
 		for (int m = 1; m < month.getValue(); ++m) {
@@ -407,16 +407,19 @@ public class OOSCDate implements DateInterface, Cloneable {
 		// add number of days in this month
 		nbDays += day;
 
+		
+		
+
 		//DateInterface test = DateInterface.toDateInterface(nbDays); use!!!! 
 		//assert (this.equals(test)) : "toNumberOfDays() and toDateInterface(...) sould be inverse function";
-		//assert (invariant()) : "The invariante is not respected";
+		//assert (invariant()) : "The invariant is not respected";
 
 		return nbDays;
 	}
 
 	@Override
 	public int toNumberOfMonths() {
-		//assert (invariant()) : "The invariante is not respected";
+		//assert (invariant()) : "The invariant is not respected";
 		return year * 12 + getMonth() - 1;
 	}
 
