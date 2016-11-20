@@ -150,13 +150,13 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 	public void addHours(int hoursToAdd) {
 		assert(hoursToAdd > 0);
 		
+		hoursToAdd = getHours() + hoursToAdd;
 		int inSeconds = hoursToAdd * SECONDS_IN_HOUR;
 		int daysToAdd = hoursToAdd / HOURS_IN_DAY;
 		int remainingHours = (inSeconds % SECONDS_IN_DAY ) / SECONDS_IN_HOUR ;
-		addDays(daysToAdd);
-		
-		int newHours = getHours() + remainingHours;
-		setHours(newHours);
+		if (daysToAdd >0)
+			addDays(daysToAdd);
+		setHours(remainingHours);
 		
 	}
 	
@@ -169,13 +169,14 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 	public void addMinutes(int minutesToAdd) {
 		assert(minutesToAdd > 0);
 		
+		minutesToAdd = minutesToAdd + getMinutes();
 		int inSeconds = minutesToAdd * SECONDS_IN_MINUTE;
-		int hoursToAdd = minutesToAdd / SECONDS_IN_HOUR ;
-		addHours(hoursToAdd);
+		int hoursToAdd = minutesToAdd / SECONDS_IN_MINUTE;
+		if (hoursToAdd >0)
+			addHours(hoursToAdd);
 		
 		int remainingMinutes = ((inSeconds % SECONDS_IN_DAY ) %  SECONDS_IN_HOUR) / SECONDS_IN_MINUTE;
-		int newMinutes = getMinutes() + remainingMinutes;
-		setMinutes(newMinutes);
+		setMinutes(remainingMinutes);
 		
 	}
 	
@@ -187,13 +188,14 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 	@Override
 	public void addSeconds(int secondsToAdd) {
 		assert(secondsToAdd > 0);
-
+		
+		secondsToAdd = secondsToAdd + getSeconds();
 		int minutesToAdd = secondsToAdd / SECONDS_IN_MINUTE ;
-		addMinutes(minutesToAdd);
+		if (minutesToAdd >0)
+			addMinutes(minutesToAdd);
 		
 		int remainingSeconds = ((secondsToAdd % SECONDS_IN_DAY ) % SECONDS_IN_HOUR ) % SECONDS_IN_MINUTE;
-		int newSeconds = getSeconds() + remainingSeconds;
-		setSeconds(newSeconds);
+		setSeconds(remainingSeconds);
 	}
 
     /**
@@ -208,10 +210,15 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 		int inSeconds = hoursToRemove * SECONDS_IN_HOUR;
 		int daysToRemove = hoursToRemove / HOURS_IN_DAY;
 		int remainingHours = (inSeconds % SECONDS_IN_DAY ) / SECONDS_IN_HOUR ;
-		removeDays(daysToRemove);
-		
-		int newHours = getHours() - remainingHours;
-		setHours(newHours);
+		if(daysToRemove>0)
+			removeDays(daysToRemove);
+		if(getHours()>=remainingHours)
+			setHours(getHours() - remainingHours);
+		else{
+			removeDays(1);
+			int balance = remainingHours-getHours();
+			setHours(24-balance);
+		}
 	}
 
     /**
@@ -224,12 +231,17 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 		assert(minutesToRemove > 0);
 
 		int inSeconds = minutesToRemove * SECONDS_IN_MINUTE;
-		int hoursToRemove = minutesToRemove / SECONDS_IN_HOUR ;
-		removeHours(hoursToRemove);
-		
+		int hoursToRemove = minutesToRemove / SECONDS_IN_MINUTE ;
 		int remainingMinutes = ((inSeconds % SECONDS_IN_DAY ) %  SECONDS_IN_HOUR) / SECONDS_IN_MINUTE;
-		int newMinutes = getMinutes() - remainingMinutes;
-		setMinutes(newMinutes);
+		if(hoursToRemove>0)
+			removeHours(hoursToRemove);
+		if(getMinutes()>=remainingMinutes)
+			setMinutes(getMinutes() - remainingMinutes);
+		else{
+			removeHours(1);
+			int balance = remainingMinutes-getMinutes();
+			setMinutes(60-balance);
+		}
 	}
 
     /**
@@ -242,11 +254,16 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
 		assert(secondsToRemove > 0);
 		
 		int minutesToRemove = secondsToRemove / SECONDS_IN_MINUTE ;
-		removeMinutes(minutesToRemove);
-		
 		int remainingSeconds = ((secondsToRemove % SECONDS_IN_DAY ) % SECONDS_IN_HOUR ) % SECONDS_IN_MINUTE;
-		int newSeconds = getSeconds() + remainingSeconds;
-		setSeconds(newSeconds);
+		if(minutesToRemove>0)
+			removeMinutes(minutesToRemove);
+		if(getSeconds()>=remainingSeconds)
+			setSeconds(getSeconds() - remainingSeconds);
+		else{
+			removeMinutes(1);
+			int balance = remainingSeconds-getSeconds();
+			setSeconds(60-balance);
+		}
 		
 	}
 
@@ -324,7 +341,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
      * @param minutes minutes to check
      */
     protected static void assertMinutes(int minutes) {
-        assert isValidMinutes(minutes);
+        assert isValidMinutes(minutes):  "Wrong value of Min" + minutes;
     }
 
     /**
@@ -332,7 +349,7 @@ public class OOSCDateTime extends OOSCDate implements DateTimeInterface{
      * @param seconds seconds to check
      */
     protected static void assertSeconds(int seconds) {
-        assert isValidSeconds(seconds);
+        assert isValidSeconds(seconds):  "Wrong value of Seconds" + seconds;
     }
 
     /**
